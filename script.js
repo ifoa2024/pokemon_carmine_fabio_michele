@@ -1,24 +1,20 @@
-
-// fetch('https://pokeapi.co/api/v2/pokemon/ditto')
-//   .then(response => {
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
-//     }
-//     return response.json(); // Parse JSON data from the response
-//   })
-//   .then(data => console.log(data))
-//   .catch(error => console.error('Error:', error));
-
+// catturare contenitore swiper cards
 let showDeck = document.querySelector('#showDeck');
 
+// recuperare una lista di pokemon
 async function getListPokemon() {
     try {
+        // fare request una lista di 4 pokemon
         let result = await fetch('https://pokeapi.co/api/v2/pokemon?limit=4&offset=0');
 
+        // recuperare la response (sotto forma di Promise) e estrapolare i dati del corpo della response tramite il metodo json()
         let data = await result.json();
+
+        // salvare i pokemons
         let pokemons = data.results;
         console.log(pokemons);
 
+        // creare ogni singolo pokemon andando a recuperare il nome e tutte le info attraverso la funzione getPokemon()
         pokemons.forEach(pokemon => {
             let name = pokemon.name;
 
@@ -32,21 +28,30 @@ async function getListPokemon() {
     }
 }
 
+// Invocare la funzione getListPokemon
 getListPokemon();
 
-
+// recuperare tutte le informazioni di un pokemon specifico
 async function getPokemon(name) {
     try {
+        // Request per recuperare le info di un pokemon mediante il suo nome
         let result = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
 
+        // recuperare la response (sotto forma di Promise) e estrapolare i dati del corpo della response tramite il metodo json()
         let data = await result.json();
 
+        // salvare un'immagine del pokemon
         let sprite = data.sprites.front_default;
+
+        // salvare il percorso del file audio del grido di battaglia del pokemon
         let cries = data.cries.latest;
+
+        // salvare il livello di esperienza base del pokemon
         let baseExperience = data.base_experience;
 
         console.log(data);
 
+        // creare la slide per l'effetto cards di Swiper
         let card = document.createElement('swiper-slide');
         card.innerHTML = `
             <h2>${name}</h2>
